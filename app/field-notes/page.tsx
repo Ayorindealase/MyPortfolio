@@ -72,7 +72,7 @@ export default async function FieldNotesPage() {
                 )}
                 {note.tags.length > 0 && (
                   <div className="mt-4 flex flex-wrap gap-2">
-                    {note.tags.map((tag) => (
+                    {note.tags.map((tag: string) => (
                       <span
                         key={tag}
                         className="rounded-full border border-white/10 px-3 py-1.5 font-mono-hud text-[10px] tracking-[0.12em] uppercase text-white/55"
