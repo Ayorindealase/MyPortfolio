@@ -1,29 +1,54 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function checkSession() {
+      const supabase = createClient();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (mounted && session) {
+        window.location.replace('/admin');
+      }
+    }
+
+    void checkSession();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       setError(error.message);
       setLoading(false);
-    } else {
-      router.push('/admin');
-      router.refresh();
+      return;
     }
+
+    if (!data.session) {
+      setError('Authenticated, but no session was created. Check Supabase auth settings.');
+      setLoading(false);
+      return;
+    }
+
+    window.location.assign('/admin');
   };
 
   return (
