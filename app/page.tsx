@@ -23,6 +23,8 @@ const LIVE_METRICS = [
   { code: 'NEXT.RUN', value: 'Agentic Systems / Applied ML' },
 ];
 
+type StatRecord = Awaited<ReturnType<typeof prisma.stat.findMany>>[number];
+
 export default async function HomePage() {
   const [profile, allStats, skills] = await Promise.all([
     prisma.profile.findFirst(),
@@ -41,7 +43,7 @@ export default async function HomePage() {
     { label: 'GITHUB', href: profile?.githubUrl },
     { label: profile?.companyName?.toUpperCase() ?? 'COMPANY', href: profile?.companyUrl },
   ].filter((link): link is { label: string; href: string } => Boolean(link.href));
-  const stats = allStats.filter((stat) => !stat.label.toUpperCase().includes('MT SCHOLAR'));
+  const stats = allStats.filter((stat: StatRecord) => !stat.label.toUpperCase().includes('MT SCHOLAR'));
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8">
@@ -167,7 +169,7 @@ export default async function HomePage() {
       </section>
 
       <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((stat) => (
+        {stats.map((stat: StatRecord) => (
           <AnimatedStat
             key={stat.id}
             value={stat.value}

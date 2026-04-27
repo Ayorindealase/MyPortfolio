@@ -2,6 +2,8 @@ import { SectionHeader } from '@/components/hud/SectionHeader';
 import { prisma } from '@/lib/prisma';
 import { WritingsClient } from './WritingsClient';
 
+type WritingRecord = Awaited<ReturnType<typeof prisma.writing.findMany>>[number];
+
 function formatPublishedDate(date: Date) {
   return new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' }).format(date);
 }
@@ -17,7 +19,7 @@ export default async function WritingsPage() {
     orderBy: [{ sortOrder: 'asc' }, { publishedDate: 'desc' }],
   });
 
-  const items = writings.map((writing) => ({
+  const items = writings.map((writing: WritingRecord) => ({
     id: writing.id,
     title: writing.title,
     slug: writing.slug,

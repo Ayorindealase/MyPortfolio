@@ -7,6 +7,9 @@ const colorMap: Record<string, string> = {
   amber: 'var(--amber)',
 };
 
+type LeadershipRoleRecord = Awaited<ReturnType<typeof prisma.leadershipRole.findMany>>[number];
+type AwardRecord = Awaited<ReturnType<typeof prisma.award.findMany>>[number];
+
 export default async function LeadershipPage() {
   const [roles, awards, profile] = await Promise.all([
     prisma.leadershipRole.findMany({
@@ -29,7 +32,7 @@ export default async function LeadershipPage() {
       />
 
       <section className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {roles.map((role) => {
+        {roles.map((role: LeadershipRoleRecord) => {
           const color = colorMap[role.accentColor] || colorMap.cyan;
           return (
             <div
@@ -81,7 +84,7 @@ export default async function LeadershipPage() {
           </div>
         </div>
         <div className="space-y-0">
-          {awards.map((award, i) => (
+          {awards.map((award: AwardRecord, i: number) => (
             <div
               key={award.title}
               className="flex items-center gap-4 py-4"

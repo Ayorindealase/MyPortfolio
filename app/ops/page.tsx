@@ -2,6 +2,9 @@ import { SectionHeader } from '@/components/hud/SectionHeader';
 import { ExperienceCard } from '@/components/hud/ExperienceCard';
 import { prisma } from '@/lib/prisma';
 
+type ExperienceRecord = Awaited<ReturnType<typeof prisma.experience.findMany>>[number];
+type CertificationRecord = Awaited<ReturnType<typeof prisma.certification.findMany>>[number];
+
 export default async function OpsPage() {
   const [experiences, certifications] = await Promise.all([
     prisma.experience.findMany({
@@ -48,7 +51,7 @@ export default async function OpsPage() {
           <div className="h-px flex-1 bg-white/8" />
         </div>
         <div className="space-y-4">
-        {experiences.map((exp) => (
+        {experiences.map((exp: ExperienceRecord) => (
           <ExperienceCard key={exp.id} {...exp} />
         ))}
         </div>
@@ -64,7 +67,7 @@ export default async function OpsPage() {
           </div>
         </div>
         <div className="flex flex-wrap gap-3">
-          {certifications.map((cert) => (
+          {certifications.map((cert: CertificationRecord) => (
             <div
               key={cert.title}
               className="min-w-[260px] flex-1 rounded-[22px] border border-white/8 bg-black/20 px-5 py-4"

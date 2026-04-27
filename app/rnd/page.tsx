@@ -1,6 +1,9 @@
 import { SectionHeader } from '@/components/hud/SectionHeader';
 import { prisma } from '@/lib/prisma';
 
+type PublicationRecord = Awaited<ReturnType<typeof prisma.publication.findMany>>[number];
+type EducationRecord = Awaited<ReturnType<typeof prisma.education.findMany>>[number];
+
 export default async function RndPage() {
   const [publications, education] = await Promise.all([
     prisma.publication.findMany({
@@ -71,7 +74,7 @@ export default async function RndPage() {
           <div className="h-px flex-1 bg-white/8" />
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {education.map((edu) => (
+        {education.map((edu: EducationRecord) => (
           <div key={edu.id} className="rounded-[24px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-6 shadow-[0_18px_60px_rgba(0,0,0,0.22)]">
             <div className="mb-3 font-mono-hud text-[10px] tracking-[0.16em] uppercase text-[var(--text-dim)]">
               {edu.period}
@@ -100,7 +103,7 @@ export default async function RndPage() {
           <div className="h-px flex-1 bg-white/8" />
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {publications.map((pub) => (
+        {publications.map((pub: PublicationRecord) => (
           <PubCard key={pub.id} pub={pub} />
         ))}
         </div>
@@ -142,7 +145,7 @@ function PubCard({
           </p>
         )}
         <div className="flex flex-wrap gap-1.5 mt-2">
-          {pub.tags.slice(0, 3).map((tag) => (
+          {pub.tags.slice(0, 3).map((tag: string) => (
             <span key={tag} className="hud-tag" style={{ color: 'var(--text-dim)', borderColor: 'var(--glass-border)' }}>
               {tag}
             </span>
