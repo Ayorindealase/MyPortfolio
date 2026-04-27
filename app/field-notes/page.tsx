@@ -4,6 +4,7 @@ import { SectionHeader } from '@/components/hud/SectionHeader';
 import { prisma } from '@/lib/prisma';
 
 const accents = ['var(--cyan)', 'var(--green)', 'var(--amber)', 'var(--red)'];
+type FieldNote = Awaited<ReturnType<typeof prisma.writing.findMany>>[number];
 
 export default async function FieldNotesPage() {
   const notes = await prisma.writing.findMany({
@@ -39,7 +40,7 @@ export default async function FieldNotesPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        {notes.map((note, index) => {
+        {notes.map((note: FieldNote, index: number) => {
           const accent = accents[index % accents.length];
           return (
             <article
