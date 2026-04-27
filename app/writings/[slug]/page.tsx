@@ -51,7 +51,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             __html: article.content
               .trim()
               .split('\n')
-              .map((line) => {
+              .map((line: string) => {
                 if (line.startsWith('## ')) return `<h2 class="font-oxanium text-xl font-bold text-white mt-8 mb-4 uppercase tracking-[2px]">${line.slice(3)}</h2>`;
                 if (line.startsWith('**') && line.endsWith('**')) return `<p class="font-body font-semibold text-white mt-4 mb-2">${line.slice(2, -2)}</p>`;
                 if (line.startsWith('- ')) return `<li class="ml-4 mb-1">${line.slice(2)}</li>`;
