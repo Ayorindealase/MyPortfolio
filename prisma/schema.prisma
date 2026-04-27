@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Profile {
+  id           String   @id @default(cuid())
+  name         String
+  title        String
+  bio          String   @db.Text
+  email        String
+  location     String
+  linkedinUrl  String
+  githubUrl    String
+  companyName  String
+  companyUrl   String
+  philosophy   String   @db.Text
+  resumeUrl    String?
+  updatedAt    DateTime @updatedAt
+}
+
+model Experience {
+  id          String   @id @default(cuid())
+  role        String
+  company     String
+  location    String
+  period      String
+  accentColor String   @default("cyan")
+  highlights  String[]
+  sortOrder   Int      @default(0)
+  visible     Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Education {
+  id          String  @id @default(cuid())
+  degree      String
+  field       String
+  institution String
+  location    String
+  gpa         String
+  period      String
+  sortOrder   Int     @default(0)
+  visible     Boolean @default(true)
+}
+
+model Publication {
+  id        String   @id @default(cuid())
+  title     String
+  abstract  String?  @db.Text
+  tags      String[]
+  type      String   @default("publication")
+  date      String
+  doiUrl    String?
+  sortOrder Int      @default(0)
+  visible   Boolean  @default(true)
+}
+
+model Writing {
+  id            String   @id @default(cuid())
+  title         String
+  slug          String   @unique
+  content       String   @db.Text
+  abstract      String?  @db.Text
+  tags          String[]
+  type          String   @default("article")
+  publishedDate DateTime @default(now())
+  isPublished   Boolean  @default(false)
+  readingTime   Int?
+  sortOrder     Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model LeadershipRole {
+  id           String  @id @default(cuid())
+  title        String
+  organization String
+  description  String  @db.Text
+  accentColor  String  @default("cyan")
+  link         String?
+  sortOrder    Int     @default(0)
+  visible      Boolean @default(true)
+}
+
+model Award {
+  id        String  @id @default(cuid())
+  title     String
+  year      String
+  sortOrder Int     @default(0)
+  visible   Boolean @default(true)
+}
+
+model Certification {
+  id        String  @id @default(cuid())
+  title     String
+  certId    String?
+  sortOrder Int     @default(0)
+  visible   Boolean @default(true)
+}
+
+model Skill {
+  id        String  @id @default(cuid())
+  name      String
+  category  String
+  sortOrder Int     @default(0)
+  visible   Boolean @default(true)
+}
+
+model Stat {
+  id        String  @id @default(cuid())
+  value     String
+  suffix    String?
+  label     String
+  color     String  @default("cyan")
+  sortOrder Int     @default(0)
+  visible   Boolean @default(true)
+}
+
+model TickerItem {
+  id        String  @id @default(cuid())
+  text      String
+  color     String  @default("cyan")
+  active    Boolean @default(true)
+  sortOrder Int     @default(0)
+}
