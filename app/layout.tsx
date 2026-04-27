@@ -41,7 +41,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     where: { active: true },
     orderBy: { sortOrder: 'asc' },
   });
-  const tickerItems = allTickerItems.filter((item) => !item.text.toUpperCase().includes('MT SCHOLAR'));
+  type TickerItemRecord = Awaited<ReturnType<typeof prisma.tickerItem.findMany>>[number];
+  const tickerItems = allTickerItems.filter(
+    (item: TickerItemRecord) => !item.text.toUpperCase().includes('MT SCHOLAR')
+  );
 
   return (
     <html lang="en" className={`${oxanium.variable} ${ibmPlexMono.variable} ${dmSans.variable}`}>
