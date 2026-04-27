@@ -36,7 +36,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           {article.title}
         </h1>
         <div className="flex flex-wrap gap-1.5">
-          {article.tags.map((tag) => (
+          {article.tags.map((tag: string) => (
             <span key={tag} className="hud-tag" style={{ color: 'var(--text-dim)', borderColor: 'var(--glass-border)' }}>
               {tag}
             </span>
